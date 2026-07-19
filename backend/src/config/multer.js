@@ -11,14 +11,35 @@ const storage = multer.diskStorage({
   },
 });
 
-const allowedMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'];
+/* Types autorisés — images + documents bureautiques */
+const allowedMimes = [
+  // Images
+  'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml',
+  // PDF
+  'application/pdf',
+  // Word
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  // Excel
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  // PowerPoint
+  'application/vnd.ms-powerpoint',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  // Zip / archives légères
+  'application/zip',
+  'application/x-zip-compressed',
+];
 
 const upload = multer({
   storage,
-  limits: { fileSize: 8 * 1024 * 1024 }, // 8 Mo
+  limits: { fileSize: 32 * 1024 * 1024 }, // 32 Mo par fichier
   fileFilter: (req, file, cb) => {
-    if (allowedMimes.includes(file.mimetype)) cb(null, true);
-    else cb(new Error('Type de fichier non autorisé.'));
+    if (allowedMimes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`Type de fichier non autorisé : ${file.mimetype}`));
+    }
   },
 });
 

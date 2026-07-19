@@ -62,6 +62,20 @@ function PresentationMenu() {
   return <DropdownMenu label="Présentation" to="/presentation" items={items} />;
 }
 
+function BlogMenu() {
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    api.get('/categories')
+      .then(({ data }) => setCategories(data.categories || []))
+      .catch(() => setCategories([]));
+  }, []);
+  const items = [
+    { key: 'tout', to: '/blog', label: 'Tout le blog' },
+    ...categories.map((c) => ({ key: c.id, to: `/blog?categorie=${c.slug}`, label: c.name })),
+  ];
+  return <DropdownMenu label="Blog" to="/blog" items={items} />;
+}
+
 /* ── Icône burger ── */
 function BurgerIcon({ open }) {
   return (
@@ -141,6 +155,14 @@ export default function Header() {
 
   const preseItems = preseSections.map((s) => ({ key: s.anchor || s.title, to: `/presentation#${s.anchor}`, label: s.title }));
   const actusItems = [{ key: 'all', to: '/actualites', label: 'Toutes les actualités' }];
+  const [blogCats, setBlogCats] = useState([]);
+  useEffect(() => {
+    api.get('/categories').then(({ data }) => setBlogCats(data.categories || [])).catch(() => {});
+  }, []);
+  const blogItems = [
+    { key: 'tout', to: '/blog', label: 'Tout le blog' },
+    ...blogCats.map((c) => ({ key: c.id, to: `/blog?categorie=${c.slug}`, label: c.name })),
+  ];
 
   return (
     <>
@@ -167,6 +189,7 @@ export default function Header() {
           <nav className="nav-desktop" style={{ gap: 24, fontSize: 14, fontWeight: 500, alignItems: 'center' }}>
             <PresentationMenu />
             <Link to="/membres" style={{ color: 'var(--text)' }}>Membres</Link>
+            <BlogMenu />
             <DropdownMenu label="Actualités" to="/actualites" items={actusItems} />
             <Link to="/contact" style={{ color: 'var(--text)' }}>Contact</Link>
           </nav>
@@ -213,6 +236,7 @@ export default function Header() {
       <nav className={`nav-mobile ${mobileOpen ? 'open' : ''}`} aria-hidden={!mobileOpen}>
         <MobileAccordion label="Présentation" to="/presentation" items={preseItems} onClose={closeMenu} />
         <Link to="/membres" onClick={closeMenu} style={{ display: 'block', padding: '14px 12px', fontSize: 17, fontWeight: 500, color: 'var(--text)', borderBottom: '1px solid var(--border)' }}>Membres</Link>
+        <MobileAccordion label="Blog" to="/blog" items={blogItems} onClose={closeMenu} />
         <MobileAccordion label="Actualités" to="/actualites" items={actusItems} onClose={closeMenu} />
         <Link to="/contact" onClick={closeMenu} style={{ display: 'block', padding: '14px 12px', fontSize: 17, fontWeight: 500, color: 'var(--text)', borderBottom: '1px solid var(--border)' }}>Contact</Link>
 
