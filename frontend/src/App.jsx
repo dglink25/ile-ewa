@@ -18,6 +18,7 @@ import Agenda from './pages/Agenda';
 import Contact from './pages/Contact';
 import MemberSpace from './pages/MemberSpace';
 import MyAccount from './pages/MyAccount';
+import PaiementConfirmation from './pages/PaiementConfirmation';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -55,6 +56,7 @@ export default function App() {
               <Route path="/actualites" element={<Actualites />} />
               <Route path="/actualites/:slug" element={<ActualitePost />} />
               <Route path="/agenda" element={<Agenda />} />
+              <Route path="/paiement/confirmation" element={<PaiementConfirmation />} />
               <Route path="/contact" element={<Contact />} />
               <Route
                 path="/espace-membre"
