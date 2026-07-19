@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --radius: 12px;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Thème sombre — par défaut / palette principale du site */
+[data-theme='dark'] {
+  --bg: #14110f;
+  --bg-elevated: #1c1815;
+  --bg-card: #201b17;
+  --text: #f3ede4;
+  --text-muted: #b8ab9a;
+  --border: #352e27;
+  --accent: #c9974a;       /* or/terracotta — identité "Ilé Ẹwà" */
+  --accent-hover: #dcae66;
+  --accent-contrast: #14110f;
+  --success: #6ea26f;
+  --danger: #d16a5a;
+}
+
+/* Thème clair */
+[data-theme='light'] {
+  --bg: #faf7f2;
+  --bg-elevated: #ffffff;
+  --bg-card: #ffffff;
+  --text: #211c17;
+  --text-muted: #6b6055;
+  --border: #e5dccd;
+  --accent: #a3722b;
+  --accent-hover: #8c5f22;
+  --accent-contrast: #ffffff;
+  --success: #3f7d43;
+  --danger: #b23a2b;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+.btn-primary:hover { background: var(--accent-hover); }
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.container {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+input, textarea, select {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  width: 100%;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 6px;
+}
