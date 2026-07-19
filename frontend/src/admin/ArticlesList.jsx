@@ -24,7 +24,8 @@ export default function ArticlesList() {
         <Link to="/admin/articles/nouveau" className="btn btn-primary">+ Nouvel article</Link>
       </div>
 
-      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 24 }}>
+      <div style={{ overflowX: 'auto', marginTop: 24 }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 480 }}>
         <thead>
           <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
             <th style={{ padding: 10 }}>Titre</th>
@@ -43,14 +44,17 @@ export default function ArticlesList() {
                   {a.status === 'published' ? 'Publié' : 'Brouillon'}
                 </span>
               </td>
-              <td style={{ padding: 10, display: 'flex', gap: 8 }}>
-                <Link to={`/admin/articles/${a.id}`} className="btn btn-outline">Modifier</Link>
-                <button className="btn btn-outline" onClick={() => handleDelete(a.id)}>Supprimer</button>
+              <td style={{ padding: 10 }}>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <Link to={`/admin/articles/${a.id}`} className="btn btn-outline">Modifier</Link>
+                  <button className="btn btn-outline" onClick={() => handleDelete(a.id)}>Supprimer</button>
+                </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

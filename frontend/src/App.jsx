@@ -12,6 +12,8 @@ import Members from './pages/Members';
 import MemberProfile from './pages/MemberProfile';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import Actualites from './pages/Actualites';
+import ActualitePost from './pages/ActualitePost';
 import Contact from './pages/Contact';
 import MemberSpace from './pages/MemberSpace';
 import MyAccount from './pages/MyAccount';
@@ -49,6 +51,8 @@ export default function App() {
               <Route path="/membres/:slug" element={<MemberProfile />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/actualites" element={<Actualites />} />
+              <Route path="/actualites/:slug" element={<ActualitePost />} />
               <Route path="/contact" element={<Contact />} />
               <Route
                 path="/espace-membre"

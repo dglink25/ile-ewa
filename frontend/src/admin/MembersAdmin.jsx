@@ -23,7 +23,8 @@ export default function MembersAdmin() {
         depuis leur espace membre.
       </p>
 
-      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 24 }}>
+      <div style={{ overflowX: 'auto', marginTop: 24 }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 480 }}>
         <thead>
           <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
             <th style={{ padding: 10 }}>Nom</th>
@@ -47,6 +48,7 @@ export default function MembersAdmin() {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

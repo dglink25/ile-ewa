@@ -78,8 +78,8 @@ export default function Home() {
             </Link>
           </Reveal>
           <Reveal delay={0.16}>
-            <Link to="/blog" className="card" style={{ padding: 28, display: 'block' }}>
-              <h3 style={{ marginTop: 0 }}>Blog</h3>
+            <Link to="/actualites" className="card" style={{ padding: 28, display: 'block' }}>
+              <h3 style={{ marginTop: 0 }}>Actualités</h3>
               <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Articles, ressources et actualités du cercle.</p>
             </Link>
           </Reveal>
@@ -111,17 +111,17 @@ export default function Home() {
         </section>
       )}
 
-      {/* APERÇU DU BLOG */}
+      {/* APERÇU DES ACTUALITÉS */}
       {articles.length > 0 && (
         <section className="container" style={{ padding: '0 24px 80px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 24 }}>
-            <h2 style={{ margin: 0 }}>Derniers articles</h2>
-            <Link to="/blog" style={{ fontSize: 14 }}>Voir tout le blog →</Link>
+            <h2 style={{ margin: 0 }}>Dernières actualités</h2>
+            <Link to="/actualites" style={{ fontSize: 14 }}>Voir toutes les actualités →</Link>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 24 }}>
             {articles.map((a, i) => (
               <Reveal key={a.id} delay={i * 0.05}>
-                <Link to={`/blog/${a.slug}`} className="card" style={{ overflow: 'hidden', display: 'block' }}>
+                <Link to={`/actualites/${a.slug}`} className="card" style={{ overflow: 'hidden', display: 'block' }}>
                   {a.cover_image_url && (
                     <img src={a.cover_image_url} alt={a.title} style={{ width: '100%', height: 150, objectFit: 'cover' }} />
                   )}
@@ -154,7 +154,7 @@ export default function Home() {
       {/* APPEL À REJOINDRE */}
       <section className="container" style={{ padding: '0 24px 100px', textAlign: 'center' }}>
         <Reveal>
-          <div className="card" style={{ padding: 48, background: 'var(--bg-elevated)' }}>
+          <div className="card cta-card" style={{ padding: 48, background: 'var(--bg-elevated)' }}>
             <h2 style={{ marginTop: 0 }}>Envie de nous rejoindre ?</h2>
             <p style={{ color: 'var(--text-muted)', maxWidth: 480, margin: '0 auto 24px' }}>
               Créez votre compte pour rejoindre le cercle et, une fois votre fiche validée, apparaître dans l'annuaire public.

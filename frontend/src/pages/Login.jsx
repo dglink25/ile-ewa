@@ -36,7 +36,7 @@ export default function Login() {
   }
 
   return (
-    <div className="container" style={{ maxWidth: 420, padding: '80px 24px' }}>
+    <div className="container auth-container" style={{ maxWidth: 420, padding: '80px 24px' }}>
       <div style={{ textAlign: 'center', marginBottom: 16 }}>
         <img src={logo} alt="Ilé Ẹwà" style={{ height: 56 }} />
       </div>

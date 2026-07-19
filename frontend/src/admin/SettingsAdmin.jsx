@@ -167,7 +167,7 @@ export default function SettingsAdmin() {
                 <label>Citation / pensée (facultatif)</label>
                 <textarea rows={2} value={slide.quote} onChange={(e) => updateSlide(slide.id, { quote: e.target.value })} />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
                 <div>
                   <label>Texte du bouton</label>
                   <input

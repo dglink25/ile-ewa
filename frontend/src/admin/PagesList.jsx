@@ -24,7 +24,8 @@ export default function PagesList() {
         <Link to="/admin/pages/nouvelle" className="btn btn-primary">+ Nouvelle page</Link>
       </div>
 
-      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 24 }}>
+      <div style={{ overflowX: 'auto', marginTop: 24 }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 360 }}>
         <thead>
           <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
             <th style={{ padding: 10 }}>Titre</th>
@@ -41,14 +42,17 @@ export default function PagesList() {
                   {p.status === 'published' ? 'Publiée' : 'Brouillon'}
                 </span>
               </td>
-              <td style={{ padding: 10, display: 'flex', gap: 8 }}>
-                <Link to={`/admin/pages/${p.id}`} className="btn btn-outline">Modifier</Link>
-                <button className="btn btn-outline" onClick={() => handleDelete(p.id)}>Supprimer</button>
+              <td style={{ padding: 10 }}>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <Link to={`/admin/pages/${p.id}`} className="btn btn-outline">Modifier</Link>
+                  <button className="btn btn-outline" onClick={() => handleDelete(p.id)}>Supprimer</button>
+                </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

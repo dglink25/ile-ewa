@@ -3,6 +3,65 @@ import { useLocation, useParams } from 'react-router-dom';
 import api from '../api/client';
 import Reveal from '../components/Reveal';
 
+/* ── Bandeau séparateur de section ── */
+function SectionBanner({ title, index }) {
+  return (
+    <div style={{
+      background: 'var(--accent)',
+      color: 'var(--accent-contrast)',
+      textAlign: 'center',
+      padding: '18px 24px',
+    }}>
+      <span style={{
+        fontFamily: 'var(--font-heading)',
+        fontSize: 13,
+        fontWeight: 700,
+        letterSpacing: '0.18em',
+        textTransform: 'uppercase',
+      }}>
+        {title}
+      </span>
+    </div>
+  );
+}
+
+/* ── Héros de section avec image de fond plein-largeur ── */
+function SectionHero({ section, index }) {
+  return (
+    <section
+      id={section.anchor}
+      className="section-hero"
+      style={{
+        scrollMarginTop: 80,
+        position: 'relative',
+        minHeight: section.image_url ? 'clamp(300px, 45vw, 520px)' : 'auto',
+        display: 'flex',
+        alignItems: 'center',
+        backgroundImage: section.image_url
+          ? `linear-gradient(180deg, rgba(20,17,15,0.5) 0%, var(--bg) 100%), url(${section.image_url})`
+          : undefined,
+        backgroundColor: !section.image_url
+          ? (index % 2 === 0 ? 'var(--bg)' : 'var(--bg-elevated)')
+          : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: section.image_url ? 'fixed' : undefined,
+      }}
+    >
+      <div className="container" style={{ maxWidth: 820, padding: 'clamp(48px, 8vw, 80px) 24px' }}>
+        <Reveal delay={index * 0.04}>
+          {section.content_html && (
+            <div
+              style={{ lineHeight: 1.8, fontSize: 16 }}
+              dangerouslySetInnerHTML={{ __html: section.content_html }}
+            />
+          )}
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 export default function DynamicPage({ fixedSlug }) {
   const params = useParams();
   const location = useLocation();
@@ -12,74 +71,74 @@ export default function DynamicPage({ fixedSlug }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setPage(null);
-    setSections([]);
-    setError(null);
+    setPage(null); setSections([]); setError(null);
     api.get(`/pages/public/${slug}`)
       .then(({ data }) => {
         setPage(data.page);
         try {
           const parsed = JSON.parse(data.page.sections || '[]');
           if (Array.isArray(parsed)) setSections(parsed);
-        } catch {
-          setSections([]);
-        }
+        } catch { setSections([]); }
       })
       .catch(() => setError("Cette page n'existe pas encore."));
   }, [slug]);
 
-  // Défilement fluide vers la section demandée via l'ancre (#anchor) dans l'URL
+  /* Défilement fluide vers l'ancre */
   useEffect(() => {
     if (!page || !location.hash) return;
     const id = location.hash.replace('#', '');
     const el = document.getElementById(id);
-    if (el) {
-      setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
-    }
+    if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
   }, [page, location.hash]);
 
   if (error) return <div className="container" style={{ padding: 60 }}><p>{error}</p></div>;
   if (!page) return <div className="container" style={{ padding: 60 }}><p>Chargement…</p></div>;
 
+  const hasSections = sections.length > 0;
+
   return (
     <div>
-      <div className="container" style={{ padding: '60px 24px 20px', maxWidth: 860 }}>
-        <Reveal>
-          <h1>{page.title}</h1>
-        </Reveal>
-        {page.cover_image_url && (
-          <Reveal delay={0.1}>
-            <img src={page.cover_image_url} alt={page.title} style={{ width: '100%', borderRadius: 12, margin: '16px 0' }} />
+      {/* ── Hero principal de la page ── */}
+      <div style={{
+        position: 'relative',
+        minHeight: page.cover_image_url ? 'clamp(280px, 40vw, 480px)' : 180,
+        display: 'flex',
+        alignItems: 'flex-end',
+        paddingBottom: 'clamp(32px, 5vw, 56px)',
+        backgroundImage: page.cover_image_url
+          ? `linear-gradient(180deg, rgba(20,17,15,0.45) 0%, var(--bg) 100%), url(${page.cover_image_url})`
+          : undefined,
+        backgroundColor: !page.cover_image_url ? 'var(--bg-elevated)' : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}>
+        <div className="container" style={{ maxWidth: 860, padding: '40px 24px 0' }}>
+          <Reveal>
+            <h1 style={{ fontSize: 'clamp(28px, 6vw, 52px)', marginBottom: 0 }}>{page.title}</h1>
           </Reveal>
-        )}
-        {page.content_html && (
-          <Reveal delay={0.15}>
-            <div dangerouslySetInnerHTML={{ __html: page.content_html }} />
-          </Reveal>
-        )}
+        </div>
       </div>
 
-      {sections.map((section, index) => (
-        <section
-          key={section.id || section.anchor}
-          id={section.anchor}
-          style={{
-            scrollMarginTop: 90,
-            padding: '80px 24px',
-            backgroundImage: section.image_url
-              ? `linear-gradient(180deg, rgba(20,17,15,0.6), var(--bg) 96%), url(${section.image_url})`
-              : undefined,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          <div className="container" style={{ maxWidth: 780 }}>
-            <Reveal delay={index * 0.05}>
-              {section.title && <h2 style={{ marginBottom: 20 }}>{section.title}</h2>}
-              {section.content_html && <div dangerouslySetInnerHTML={{ __html: section.content_html }} />}
-            </Reveal>
-          </div>
+      {/* Intro texte (content_html de la page elle-même) */}
+      {page.content_html && (
+        <section className="container" style={{ maxWidth: 820, padding: '48px 24px' }}>
+          <Reveal delay={0.1}>
+            <div
+              style={{ lineHeight: 1.8, fontSize: 16 }}
+              dangerouslySetInnerHTML={{ __html: page.content_html }}
+            />
+          </Reveal>
         </section>
+      )}
+
+      {/* ── Sections avec bandeau titre + héros ── */}
+      {sections.map((section, index) => (
+        <div key={section.id || section.anchor}>
+          {/* Bandeau séparateur */}
+          {section.title && <SectionBanner title={section.title} index={index} />}
+          {/* Héros de la section */}
+          <SectionHero section={section} index={index} />
+        </div>
       ))}
     </div>
   );
