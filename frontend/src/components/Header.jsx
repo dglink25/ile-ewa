@@ -76,6 +76,21 @@ function BlogMenu() {
   return <DropdownMenu label="Blog" to="/blog" items={items} />;
 }
 
+function AgendaMenu() {
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    api.get('/categories')
+      .then(({ data }) => setCategories(data.categories || []))
+      .catch(() => setCategories([]));
+  }, []);
+  const items = [
+    { key: 'tout',     to: '/agenda',                   label: "Tout l'agenda" },
+    ...categories.map((c) => ({ key: c.id, to: `/agenda?categorie=${c.slug}`, label: c.name })),
+    { key: 'sep', to: '/agenda?periode=past', label: 'Événements passés' },
+  ];
+  return <DropdownMenu label="Agenda" to="/agenda" items={items} />;
+}
+
 /* ── Icône burger ── */
 function BurgerIcon({ open }) {
   return (
@@ -163,6 +178,11 @@ export default function Header() {
     { key: 'tout', to: '/blog', label: 'Tout le blog' },
     ...blogCats.map((c) => ({ key: c.id, to: `/blog?categorie=${c.slug}`, label: c.name })),
   ];
+  const agendaItems = [
+    { key: 'tout',     to: '/agenda',                   label: "Tout l'agenda" },
+    ...blogCats.map((c) => ({ key: `ag-${c.id}`, to: `/agenda?categorie=${c.slug}`, label: c.name })),
+    { key: 'past', to: '/agenda?periode=past', label: 'Événements passés' },
+  ];
 
   return (
     <>
@@ -189,6 +209,7 @@ export default function Header() {
           <nav className="nav-desktop" style={{ gap: 24, fontSize: 14, fontWeight: 500, alignItems: 'center' }}>
             <PresentationMenu />
             <Link to="/membres" style={{ color: 'var(--text)' }}>Membres</Link>
+            <AgendaMenu />
             <BlogMenu />
             <DropdownMenu label="Actualités" to="/actualites" items={actusItems} />
             <Link to="/contact" style={{ color: 'var(--text)' }}>Contact</Link>
@@ -236,6 +257,7 @@ export default function Header() {
       <nav className={`nav-mobile ${mobileOpen ? 'open' : ''}`} aria-hidden={!mobileOpen}>
         <MobileAccordion label="Présentation" to="/presentation" items={preseItems} onClose={closeMenu} />
         <Link to="/membres" onClick={closeMenu} style={{ display: 'block', padding: '14px 12px', fontSize: 17, fontWeight: 500, color: 'var(--text)', borderBottom: '1px solid var(--border)' }}>Membres</Link>
+        <MobileAccordion label="Agenda" to="/agenda" items={agendaItems} onClose={closeMenu} />
         <MobileAccordion label="Blog" to="/blog" items={blogItems} onClose={closeMenu} />
         <MobileAccordion label="Actualités" to="/actualites" items={actusItems} onClose={closeMenu} />
         <Link to="/contact" onClick={closeMenu} style={{ display: 'block', padding: '14px 12px', fontSize: 17, fontWeight: 500, color: 'var(--text)', borderBottom: '1px solid var(--border)' }}>Contact</Link>

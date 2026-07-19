@@ -14,6 +14,7 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Actualites from './pages/Actualites';
 import ActualitePost from './pages/ActualitePost';
+import Agenda from './pages/Agenda';
 import Contact from './pages/Contact';
 import MemberSpace from './pages/MemberSpace';
 import MyAccount from './pages/MyAccount';
@@ -53,6 +54,7 @@ export default function App() {
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/actualites" element={<Actualites />} />
               <Route path="/actualites/:slug" element={<ActualitePost />} />
+              <Route path="/agenda" element={<Agenda />} />
               <Route path="/contact" element={<Contact />} />
               <Route
                 path="/espace-membre"

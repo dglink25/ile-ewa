@@ -122,11 +122,47 @@ export default function SettingsAdmin() {
         </div>
 
         <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '8px 0' }} />
+        {/* ── Pages Blog & Agenda ── */}
+        <h2 style={{ fontSize: 18, margin: '0 0 4px' }}>Page Blog</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+          <div>
+            <label>Titre affiché dans le hero</label>
+            <input value={settings.blog_title || ''} onChange={(e) => setSettings({ ...settings, blog_title: e.target.value })} placeholder="Blog" />
+          </div>
+          <div>
+            <label>Sous-titre</label>
+            <input value={settings.blog_subtitle || ''} onChange={(e) => setSettings({ ...settings, blog_subtitle: e.target.value })} placeholder="Articles, ressources…" />
+          </div>
+        </div>
+        <ImageInput
+          label="Image de fond du hero Blog (laissez vide pour utiliser l'image par défaut)"
+          value={settings.blog_hero_image || ''}
+          onChange={(url) => setSettings({ ...settings, blog_hero_image: url })}
+        />
+
+        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '8px 0' }} />
+        <h2 style={{ fontSize: 18, margin: '0 0 4px' }}>Page Agenda</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+          <div>
+            <label>Titre affiché dans le hero</label>
+            <input value={settings.agenda_title || ''} onChange={(e) => setSettings({ ...settings, agenda_title: e.target.value })} placeholder="Agenda" />
+          </div>
+          <div>
+            <label>Sous-titre</label>
+            <input value={settings.agenda_subtitle || ''} onChange={(e) => setSettings({ ...settings, agenda_subtitle: e.target.value })} placeholder="Formations, ateliers…" />
+          </div>
+        </div>
+        <ImageInput
+          label="Image de fond du hero Agenda (laissez vide pour utiliser l'image par défaut)"
+          value={settings.agenda_hero_image || ''}
+          onChange={(url) => setSettings({ ...settings, agenda_hero_image: url })}
+        />
+
+        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '8px 0' }} />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
           <h2 style={{ fontSize: 18, margin: 0 }}>Diapositives de l'accueil</h2>
           <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>Défilent automatiquement toutes les 5 secondes</span>
-        </div>
-        <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: -12 }}>
+        </div>        <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: -12 }}>
           Ajoutez autant d'images que vous le souhaitez. Chacune peut avoir son propre titre, sa description,
           sa citation et son bouton d'action.
         </p>

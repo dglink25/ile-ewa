@@ -25,43 +25,73 @@ function IcoClock() {
 }
 
 /* ── Hero statique plein-largeur ── */
+const BLOG_HERO_FALLBACK = 'https://images.unsplash.com/photo-1456324504439-367cee3b3c32?w=1600&q=80&auto=format&fit=crop';
+
 function BlogHero({ settings }) {
-  const bg = settings?.blog_hero_image || '';
+  const bg = settings?.blog_hero_image || BLOG_HERO_FALLBACK;
+
   return (
     <section style={{
       position: 'relative',
-      minHeight: 'clamp(260px, 35vw, 380px)',
+      minHeight: 'clamp(300px, 42vw, 440px)',
       display: 'flex',
       alignItems: 'flex-end',
-      backgroundImage: bg
-        ? `linear-gradient(to bottom, rgba(20,17,15,0.45) 0%, rgba(20,17,15,0.75) 100%), url(${bg})`
-        : 'linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg) 100%)',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
       overflow: 'hidden',
     }}>
-      {/* Overlay accent bas */}
+      {/* Image de fond */}
       <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0,
-        height: 4, background: 'var(--accent)',
+        position: 'absolute', inset: 0,
+        backgroundImage: `url(${bg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        transform: 'scale(1.04)',
+        transition: 'transform 8s ease',
       }} />
 
-      <div className="container" style={{ padding: 'clamp(32px, 5vw, 56px) 24px clamp(36px, 5vw, 52px)', position: 'relative', zIndex: 1 }}>
+      {/* Overlay dégradé sombre */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'linear-gradient(to bottom, rgba(10,8,6,0.35) 0%, rgba(10,8,6,0.78) 100%)',
+      }} />
+
+      {/* Ligne accent bas */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        height: 4, background: 'var(--accent)', zIndex: 2,
+      }} />
+
+      <div className="container" style={{
+        padding: 'clamp(40px, 6vw, 64px) 24px clamp(40px, 5vw, 56px)',
+        position: 'relative', zIndex: 1,
+      }}>
         <Reveal>
+          {/* Étiquette */}
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            background: 'var(--accent)', color: 'var(--accent-contrast)',
+            fontSize: 11, fontWeight: 700, letterSpacing: '0.14em',
+            textTransform: 'uppercase', padding: '5px 14px',
+            borderRadius: 20, marginBottom: 16,
+          }}>
+            <IcoPen /> Blog
+          </div>
+
           <h1 style={{
-            fontSize: 'clamp(28px, 5vw, 48px)',
-            color: bg ? '#fff' : 'var(--text)',
-            margin: '0 0 10px',
-            textShadow: bg ? '0 2px 12px rgba(0,0,0,0.5)' : 'none',
+            fontSize: 'clamp(28px, 5vw, 52px)',
+            color: '#fff',
+            margin: '0 0 12px',
+            textShadow: '0 2px 20px rgba(0,0,0,0.6)',
+            lineHeight: 1.15,
           }}>
             {settings?.blog_title || 'Blog'}
           </h1>
           <p style={{
-            fontSize: 'clamp(14px, 2vw, 17px)',
-            color: bg ? 'rgba(255,255,255,0.82)' : 'var(--text-muted)',
+            fontSize: 'clamp(14px, 2vw, 18px)',
+            color: 'rgba(255,255,255,0.8)',
             margin: 0,
             maxWidth: 560,
-            textShadow: bg ? '0 1px 6px rgba(0,0,0,0.4)' : 'none',
+            textShadow: '0 1px 8px rgba(0,0,0,0.5)',
+            lineHeight: 1.6,
           }}>
             {settings?.blog_subtitle || 'Articles, ressources et réflexions du cercle Ilé Ẹwà.'}
           </p>
@@ -69,6 +99,10 @@ function BlogHero({ settings }) {
       </div>
     </section>
   );
+}
+
+function IcoPen() {
+  return <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>;
 }
 
 /* ── Carte article layout horizontal (article vedette) ── */

@@ -7,6 +7,7 @@ const upload = require('../config/multer');
 // ── Public ──────────────────────────────
 router.get('/public', controller.listPublic);
 router.get('/public/:slug', controller.getPublicBySlug);
+router.get('/agenda', controller.listAgenda);
 
 // ── Admin ────────────────────────────────
 router.get('/', requireAuth, requireRole('admin'), controller.listAll);

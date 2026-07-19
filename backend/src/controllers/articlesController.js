@@ -55,8 +55,47 @@ async function getPublicBySlug(req, res) {
 }
 
 /* ─────────────────────────────────────────
-   ADMIN — liste
+   PUBLIC — Agenda (articles avec start_date)
 ───────────────────────────────────────── */
+async function listAgenda(req, res) {
+  const { category, period } = req.query; // period: 'upcoming' | 'past' | 'all'
+
+  let query = knex('articles')
+    .leftJoin('categories', 'categories.id', 'articles.category_id')
+    .where('articles.status', 'published')
+    .whereNotNull('articles.start_date')
+    .select(
+      'articles.id', 'articles.title', 'articles.slug', 'articles.excerpt',
+      'articles.cover_image_url', 'articles.published_at',
+      'articles.start_date', 'articles.end_date',
+      'articles.is_free', 'articles.price', 'articles.has_promo',
+      'articles.promo_price', 'articles.promo_start', 'articles.promo_end',
+      'categories.name as category_name', 'categories.slug as category_slug',
+    );
+
+  // Filtre période
+  const today = new Date().toISOString().slice(0, 10);
+  if (period === 'past') {
+    query = query.where('articles.start_date', '<', today);
+    query = query.orderBy('articles.start_date', 'desc');
+  } else if (period === 'all') {
+    query = query.orderBy('articles.start_date', 'asc');
+  } else {
+    // upcoming par défaut : start_date >= aujourd'hui OU end_date >= aujourd'hui
+    query = query.where(function () {
+      this.where('articles.start_date', '>=', today)
+        .orWhere('articles.end_date', '>=', today);
+    });
+    query = query.orderBy('articles.start_date', 'asc');
+  }
+
+  if (category) query = query.where('categories.slug', category);
+
+  const events = await query;
+  res.json({ events });
+}
+
+
 async function listAll(req, res) {
   const articles = await knex('articles')
     .leftJoin('categories', 'categories.id', 'articles.category_id')
@@ -190,7 +229,7 @@ async function remove(req, res) {
 }
 
 module.exports = {
-  listPublic, getPublicBySlug,
+  listPublic, getPublicBySlug, listAgenda,
   listAll, getById, create, update, remove,
   uploadSupport,
 };
