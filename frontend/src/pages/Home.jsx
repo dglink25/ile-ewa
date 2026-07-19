@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/client';
 import HeroCarousel from '../components/HeroCarousel';
+import Reveal from '../components/Reveal';
 
 const DEFAULT_SLIDE = {
   id: 'default',
@@ -55,25 +56,33 @@ export default function Home() {
       {/* INTRODUCTION (texte libre, éditable depuis Admin → Paramètres) */}
       {settings.home_intro_html && (
         <section className="container" style={{ maxWidth: 760, padding: '60px 24px 80px', textAlign: 'center' }}>
-          <div dangerouslySetInnerHTML={{ __html: settings.home_intro_html }} />
+          <Reveal>
+            <div dangerouslySetInnerHTML={{ __html: settings.home_intro_html }} />
+          </Reveal>
         </section>
       )}
 
       {/* PILIERS DU SITE */}
       <section className="container" style={{ padding: '0 24px 80px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 24 }}>
-          <Link to="/presentation" className="card" style={{ padding: 28, display: 'block' }}>
-            <h3 style={{ marginTop: 0 }}>Présentation</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Notre vision, nos valeurs et notre approche.</p>
-          </Link>
-          <Link to="/membres" className="card" style={{ padding: 28, display: 'block' }}>
-            <h3 style={{ marginTop: 0 }}>Annuaire des membres</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Découvrez les praticien·ne·s et complices du cercle.</p>
-          </Link>
-          <Link to="/blog" className="card" style={{ padding: 28, display: 'block' }}>
-            <h3 style={{ marginTop: 0 }}>Blog</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Articles, ressources et actualités du cercle.</p>
-          </Link>
+          <Reveal delay={0}>
+            <Link to="/presentation" className="card" style={{ padding: 28, display: 'block' }}>
+              <h3 style={{ marginTop: 0 }}>Présentation</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Notre vision, nos valeurs et notre approche.</p>
+            </Link>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <Link to="/membres" className="card" style={{ padding: 28, display: 'block' }}>
+              <h3 style={{ marginTop: 0 }}>Annuaire des membres</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Découvrez les praticien·ne·s et complices du cercle.</p>
+            </Link>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <Link to="/blog" className="card" style={{ padding: 28, display: 'block' }}>
+              <h3 style={{ marginTop: 0 }}>Blog</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Articles, ressources et actualités du cercle.</p>
+            </Link>
+          </Reveal>
         </div>
       </section>
 
@@ -85,16 +94,18 @@ export default function Home() {
             <Link to="/membres" style={{ fontSize: 14 }}>Voir tout l'annuaire →</Link>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 20 }}>
-            {profiles.map((p) => (
-              <Link to={`/membres/${p.slug}`} key={p.id} className="card" style={{ padding: 24, textAlign: 'center' }}>
-                <img
-                  src={p.avatar_url || 'https://placehold.co/100x100?text=%20'}
-                  alt={p.display_name}
-                  style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', margin: '0 auto 12px' }}
-                />
-                <h3 style={{ margin: '8px 0 4px' }}>{p.display_name}</h3>
-                {p.city && <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>{p.city}</p>}
-              </Link>
+            {profiles.map((p, i) => (
+              <Reveal key={p.id} delay={i * 0.05}>
+                <Link to={`/membres/${p.slug}`} className="card" style={{ padding: 24, textAlign: 'center', display: 'block' }}>
+                  <img
+                    src={p.avatar_url || 'https://placehold.co/100x100?text=%20'}
+                    alt={p.display_name}
+                    style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', margin: '0 auto 12px' }}
+                  />
+                  <h3 style={{ margin: '8px 0 4px' }}>{p.display_name}</h3>
+                  {p.city && <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>{p.city}</p>}
+                </Link>
+              </Reveal>
             ))}
           </div>
         </section>
@@ -108,17 +119,19 @@ export default function Home() {
             <Link to="/blog" style={{ fontSize: 14 }}>Voir tout le blog →</Link>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 24 }}>
-            {articles.map((a) => (
-              <Link to={`/blog/${a.slug}`} key={a.id} className="card" style={{ overflow: 'hidden' }}>
-                {a.cover_image_url && (
-                  <img src={a.cover_image_url} alt={a.title} style={{ width: '100%', height: 150, objectFit: 'cover' }} />
-                )}
-                <div style={{ padding: 16 }}>
-                  {a.category_name && <span style={{ fontSize: 12, color: 'var(--accent)' }}>{a.category_name}</span>}
-                  <h3 style={{ margin: '6px 0' }}>{a.title}</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>{a.excerpt}</p>
-                </div>
-              </Link>
+            {articles.map((a, i) => (
+              <Reveal key={a.id} delay={i * 0.05}>
+                <Link to={`/blog/${a.slug}`} className="card" style={{ overflow: 'hidden', display: 'block' }}>
+                  {a.cover_image_url && (
+                    <img src={a.cover_image_url} alt={a.title} style={{ width: '100%', height: 150, objectFit: 'cover' }} />
+                  )}
+                  <div style={{ padding: 16 }}>
+                    {a.category_name && <span style={{ fontSize: 12, color: 'var(--accent)' }}>{a.category_name}</span>}
+                    <h3 style={{ margin: '6px 0' }}>{a.title}</h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>{a.excerpt}</p>
+                  </div>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </section>
@@ -127,24 +140,28 @@ export default function Home() {
       {/* TÉMOIGNAGES (texte libre, éditable depuis Admin → Paramètres) */}
       {settings.home_testimonials_html && (
         <section className="container" style={{ padding: '0 24px 80px', maxWidth: 820 }}>
-          <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Ils en parlent</h2>
-          <div
-            className="card"
-            style={{ padding: 32, fontStyle: 'italic' }}
-            dangerouslySetInnerHTML={{ __html: settings.home_testimonials_html }}
-          />
+          <Reveal>
+            <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Ils en parlent</h2>
+            <div
+              className="card"
+              style={{ padding: 32, fontStyle: 'italic' }}
+              dangerouslySetInnerHTML={{ __html: settings.home_testimonials_html }}
+            />
+          </Reveal>
         </section>
       )}
 
       {/* APPEL À REJOINDRE */}
       <section className="container" style={{ padding: '0 24px 100px', textAlign: 'center' }}>
-        <div className="card" style={{ padding: 48, background: 'var(--bg-elevated)' }}>
-          <h2 style={{ marginTop: 0 }}>Envie de nous rejoindre ?</h2>
-          <p style={{ color: 'var(--text-muted)', maxWidth: 480, margin: '0 auto 24px' }}>
-            Créez votre compte pour rejoindre le cercle et, une fois votre fiche validée, apparaître dans l'annuaire public.
-          </p>
-          <Link to="/inscription" className="btn btn-primary">Créer mon compte</Link>
-        </div>
+        <Reveal>
+          <div className="card" style={{ padding: 48, background: 'var(--bg-elevated)' }}>
+            <h2 style={{ marginTop: 0 }}>Envie de nous rejoindre ?</h2>
+            <p style={{ color: 'var(--text-muted)', maxWidth: 480, margin: '0 auto 24px' }}>
+              Créez votre compte pour rejoindre le cercle et, une fois votre fiche validée, apparaître dans l'annuaire public.
+            </p>
+            <Link to="/inscription" className="btn btn-primary">Créer mon compte</Link>
+          </div>
+        </Reveal>
       </section>
     </div>
   );

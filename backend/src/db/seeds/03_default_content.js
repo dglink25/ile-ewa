@@ -2,16 +2,39 @@ exports.seed = async function (knex) {
   // Page "Présentation" par défaut, pour que /presentation ne renvoie pas 404
   const presentation = await knex('pages').where({ slug: 'presentation' }).first();
   if (!presentation) {
+    const exampleSections = JSON.stringify([
+      {
+        id: 'section-1',
+        title: 'Notre mission',
+        anchor: 'notre-mission',
+        image_url: '',
+        content_html: '<p>Décrivez ici la mission du cercle Ilé Ẹwà. Modifiable depuis Admin → Pages du site.</p>',
+      },
+      {
+        id: 'section-2',
+        title: 'Nos valeurs',
+        anchor: 'nos-valeurs',
+        image_url: '',
+        content_html: '<p>Décrivez ici les valeurs qui animent votre communauté.</p>',
+      },
+      {
+        id: 'section-3',
+        title: 'Notre histoire',
+        anchor: 'notre-histoire',
+        image_url: '',
+        content_html: '<p>Racontez ici la genèse et le parcours du cercle.</p>',
+      },
+    ]);
+
     await knex('pages').insert({
       title: 'Présentation',
       slug: 'presentation',
       status: 'published',
       content_html: `
-        <p>Bienvenue sur la page de présentation d'Ilé Ẹwà. Ce texte est un exemple :
+        <p>Bienvenue sur la page de présentation d'Ilé Ẹwà. Ce texte d'introduction est un exemple :
         modifiez-le librement depuis le back office (Admin → Pages du site → Présentation).</p>
-        <p>Vous pouvez y écrire votre histoire, votre mission, vos valeurs, et mettre en forme
-        le texte comme dans un traitement de texte (gras, couleurs, tableaux...).</p>
       `,
+      sections: exampleSections,
     });
   }
 
