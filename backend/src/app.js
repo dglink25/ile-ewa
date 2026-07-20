@@ -9,26 +9,31 @@ const app = express();
 
 app.use(helmet({ crossOriginResourcePolicy: false }));
 
-/* ── CORS — accepte toutes les origines autorisées ── */
-const ALLOWED_ORIGINS = (process.env.CLIENT_URL || '')
-  .split(',')
-  .map((o) => o.trim())
-  .filter(Boolean);
-
-// Toujours autoriser localhost en dev
-ALLOWED_ORIGINS.push('http://localhost:5173', 'http://localhost:3000');
+/* ── CORS — liste blanche + fallback open en dev ── */
+const ALLOWED = [
+  'https://ile-ewa.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  // Ajouter ici tout autre domaine frontend si besoin
+  ...(process.env.CLIENT_URL || '').split(',').map((s) => s.trim()).filter(Boolean),
+];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    // Requêtes sans origin (Postman, curl, server-to-server)
-    if (!origin) return callback(null, true);
-    if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
-    // En l'absence de liste configurée, tout autoriser
-    if (ALLOWED_ORIGINS.length <= 2) return callback(null, true);
-    callback(new Error(`CORS bloqué pour l'origine : ${origin}`));
+  origin: (origin, cb) => {
+    // Sans origin = Postman / curl / server-to-server → OK
+    if (!origin) return cb(null, true);
+    if (ALLOWED.includes(origin)) return cb(null, true);
+    // En NODE_ENV=development : tout autoriser
+    if (process.env.NODE_ENV !== 'production') return cb(null, true);
+    cb(new Error(`CORS: origine non autorisée → ${origin}`));
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
+// Répondre immédiatement aux preflight OPTIONS
+app.options('*', cors());
 app.use(morgan('dev'));
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
