@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const api = axios.create({ baseURL: '/api' });
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || '/api',
+});
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('ile-ewa-access-token');
@@ -30,7 +32,7 @@ api.interceptors.response.use(
 
       isRefreshing = true;
       try {
-        const { data } = await axios.post('/api/auth/refresh', { refreshToken });
+        const { data } = await axios.post(`${import.meta.env.VITE_API_URL || '/api'}/auth/refresh`, { refreshToken });
         localStorage.setItem('ile-ewa-access-token', data.accessToken);
         queue.forEach(({ resolve, original: o }) => {
           o.headers.Authorization = `Bearer ${data.accessToken}`;
