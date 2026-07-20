@@ -8,7 +8,27 @@ const path = require('path');
 const app = express();
 
 app.use(helmet({ crossOriginResourcePolicy: false }));
-app.use(cors({ origin: process.env.CLIENT_URL || '*', credentials: true }));
+
+/* ── CORS — accepte toutes les origines autorisées ── */
+const ALLOWED_ORIGINS = (process.env.CLIENT_URL || '')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+// Toujours autoriser localhost en dev
+ALLOWED_ORIGINS.push('http://localhost:5173', 'http://localhost:3000');
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Requêtes sans origin (Postman, curl, server-to-server)
+    if (!origin) return callback(null, true);
+    if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+    // En l'absence de liste configurée, tout autoriser
+    if (ALLOWED_ORIGINS.length <= 2) return callback(null, true);
+    callback(new Error(`CORS bloqué pour l'origine : ${origin}`));
+  },
+  credentials: true,
+}));
 app.use(morgan('dev'));
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));

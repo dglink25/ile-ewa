@@ -90,7 +90,8 @@ async function initPayment(req, res) {
   const profile = await knex('profiles').where({ user_id: req.user.id }).first();
 
   try {
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+    // URL de retour après paiement — prendre la première origine de la liste
+    const clientUrl = (process.env.CLIENT_URL || 'http://localhost:5173').split(',')[0].trim();
     // Récupérer la page d'origine pour la redirection après paiement
     const fromPath = req.body.from_path || '/blog';
 
