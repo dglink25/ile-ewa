@@ -37,6 +37,7 @@ import MembersAdmin from './admin/MembersAdmin';
 import MenusAdmin from './admin/MenusAdmin';
 import MediaAdmin from './admin/MediaAdmin';
 import SettingsAdmin from './admin/SettingsAdmin';
+import AdminProfile from './admin/AdminProfile';
 
 export default function App() {
   return (
@@ -92,6 +93,7 @@ export default function App() {
               <Route path="menus" element={<MenusAdmin />} />
               <Route path="medias" element={<MediaAdmin />} />
               <Route path="parametres" element={<SettingsAdmin />} />
+              <Route path="profil" element={<AdminProfile />} />
             </Route>
           </Routes>
         </BrowserRouter>

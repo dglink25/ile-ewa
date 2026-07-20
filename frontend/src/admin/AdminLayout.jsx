@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import ThemeToggle from '../components/ThemeToggle';
 import logo from '../logo.png';
 
@@ -42,6 +43,10 @@ function IcoBurger({ open }) {
   );
 }
 
+function IcoProfile() {
+  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+}
+
 const links = [
   { to: '/admin',            label: 'Tableau de bord',    Icon: IcoDashboard,  end: true },
   { to: '/admin/pages',      label: 'Pages du site',      Icon: IcoPages },
@@ -54,6 +59,7 @@ const links = [
 ];
 
 export default function AdminLayout() {
+  const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
@@ -110,6 +116,23 @@ export default function AdminLayout() {
       </nav>
 
       <div style={{ marginTop: 24, padding: '0 4px' }}><ThemeToggle /></div>
+
+      {/* Profil admin en bas de la sidebar */}
+      <div style={{ marginTop: 'auto', paddingTop: 20, borderTop: '1px solid var(--border)' }}>
+        <NavLink
+          to="/admin/profil"
+          style={({ isActive }) => ({
+            display: 'flex', alignItems: 'center', gap: 10,
+            padding: '9px 12px', borderRadius: 8, fontSize: 13, fontWeight: 500,
+            color: isActive ? 'var(--accent-contrast)' : 'var(--text)',
+            background: isActive ? 'var(--accent)' : 'transparent',
+            transition: 'background 0.15s, color 0.15s',
+          })}
+        >
+          <IcoProfile />
+          Mon profil
+        </NavLink>
+      </div>
     </>
   );
 
