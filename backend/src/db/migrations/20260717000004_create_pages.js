@@ -3,7 +3,7 @@ exports.up = function (knex) {
     table.increments('id').primary();
     table.string('title', 190).notNullable();
     table.string('slug', 190).notNullable().unique();
-    table.longtext('content_html').nullable(); // édité via TipTap (WYSIWYG)
+    table.text('content_html').nullable(); // édité via TipTap (WYSIWYG)
     table.string('cover_image_url', 500).nullable();
     table.enu('status', ['draft', 'published']).notNullable().defaultTo('draft');
     table.json('meta').nullable(); // seo title/description etc.

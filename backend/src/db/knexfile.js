@@ -1,28 +1,47 @@
-require('dotenv').config();
+const path = require('path');
 
-/**
- * Configuration Knex — migrations évolutives.
- * Chaque évolution du schéma = un nouveau fichier de migration (jamais on
- * modifie un ancien fichier déjà exécuté en prod). On lance
- * `npm run migrate` pour appliquer les nouvelles migrations sans jamais
- * toucher aux données déjà en base.
- */
+// Essayer plusieurs chemins pour trouver le .env
+// (le CLI knex change le cwd vers src/db/)
+const envPaths = [
+  path.resolve(__dirname, '../../../../.env'),  // src/db/ → ile-ewa/ (racine projet)
+  path.resolve(__dirname, '../../../.env'),      // src/db/ → backend/
+  path.resolve(__dirname, '../../.env'),
+  path.resolve(__dirname, '../.env'),
+  path.resolve(process.cwd(), '.env'),
+  path.resolve(process.cwd(), '../../.env'),
+  path.resolve(process.cwd(), '../../../.env'),
+];
+
+for (const p of envPaths) {
+  const result = require('dotenv').config({ path: p });
+  if (!result.error && process.env.DATABASE_URL) break;
+}
+
+const url = process.env.DATABASE_URL;
+
+if (!url) {
+  throw new Error(
+    `DATABASE_URL introuvable.\nChemins testés :\n${envPaths.join('\n')}\n` +
+    `cwd: ${process.cwd()}, __dirname: ${__dirname}`,
+  );
+}
+
 module.exports = {
-  client: 'mysql2',
+  client: 'pg',
+
   connection: {
-    host: process.env.DB_HOST || '127.0.0.1',
-    port: Number(process.env.DB_PORT) || 3306,
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'ile_ewa',
-    charset: 'utf8mb4',
+    connectionString: url,
+    ssl: { rejectUnauthorized: false },
   },
+
   migrations: {
-    directory: './migrations',
+    directory: path.resolve(__dirname, 'migrations'),
     tableName: 'knex_migrations',
   },
+
   seeds: {
-    directory: './seeds',
+    directory: path.resolve(__dirname, 'seeds'),
   },
+
   pool: { min: 0, max: 10 },
 };

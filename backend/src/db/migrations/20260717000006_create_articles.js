@@ -4,7 +4,7 @@ exports.up = function (knex) {
     table.string('title', 190).notNullable();
     table.string('slug', 190).notNullable().unique();
     table.text('excerpt').nullable();
-    table.longtext('content_html').nullable(); // WYSIWYG
+    table.text('content_html').nullable(); // WYSIWYG (longtext MySQL → text PostgreSQL)
     table.string('cover_image_url', 500).nullable();
     table.integer('category_id').unsigned().nullable()
       .references('id').inTable('categories').onDelete('SET NULL');
