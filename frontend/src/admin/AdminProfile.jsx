@@ -113,7 +113,9 @@ export default function AdminProfile() {
   const [savingPwd, setSavingPwd] = useState(false);
 
   useEffect(() => {
-    api.get('/profiles/me').then(({ data }) => setProfile(data.profile)).catch(() => {});
+    api.get('/profiles/me')
+      .then(({ data }) => setProfile(data.profile || {}))
+      .catch(() => setProfile({}));
   }, []);
 
   async function saveProfil(e) {

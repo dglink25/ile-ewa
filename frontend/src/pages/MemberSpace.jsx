@@ -305,7 +305,9 @@ export default function MemberSpace() {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    api.get('/profiles/me').then(({ data }) => setProfile(data.profile));
+    api.get('/profiles/me')
+      .then(({ data }) => setProfile(data.profile || {}))
+      .catch(() => setProfile({}));
   }, []);
 
   if (!profile) {

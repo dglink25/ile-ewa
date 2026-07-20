@@ -16,8 +16,29 @@ async function getPublicBySlug(req, res) {
 }
 
 // Membre connecté : gère sa propre fiche
+// Si le profil n'existe pas encore (ex: admin créé avant cette logique), on le crée automatiquement.
 async function getMyProfile(req, res) {
-  const profile = await knex('profiles').where({ user_id: req.user.id }).first();
+  let profile = await knex('profiles').where({ user_id: req.user.id }).first();
+
+  if (!profile) {
+    // Récupérer le nom depuis users si possible
+    const user = await knex('users').where({ id: req.user.id }).first();
+    const display_name = user?.email?.split('@')[0] || 'Utilisateur';
+
+    // Générer un slug unique
+    let slug = display_name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    let i = 1;
+    while (await knex('profiles').where({ slug }).first()) slug = `${slug}-${i++}`;
+
+    await knex('profiles').insert({
+      user_id: req.user.id,
+      display_name,
+      slug,
+      is_published: false,
+    });
+    profile = await knex('profiles').where({ user_id: req.user.id }).first();
+  }
+
   res.json({ profile });
 }
 
