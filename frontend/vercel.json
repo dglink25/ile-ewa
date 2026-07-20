@@ -1,9 +1,0 @@
-{
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "destination": "https://careasy.cap-epac.bj/$1",
-      "permanent": true
-    }
-  ]
-}
