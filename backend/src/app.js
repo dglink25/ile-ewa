@@ -14,6 +14,8 @@ const ALLOWED = [
   'https://ile-ewa.vercel.app',
   'http://localhost:5173',
   'http://localhost:3000',
+  'https://portail-ileewa.com',
+  'https://www.portail-ileewa.com',
   // Ajouter ici tout autre domaine frontend si besoin
   ...(process.env.CLIENT_URL || '').split(',').map((s) => s.trim()).filter(Boolean),
 ];
