@@ -2,6 +2,8 @@ import { useEffect, useState, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import api from '../api/client';
 import Reveal from '../components/Reveal';
+import SEO from '../components/SEO';
+import SchemaOrg, { schemaBreadcrumb } from '../components/SchemaOrg';
 
 /* ────────────────────────────────────────
    ICÔNES
@@ -335,6 +337,15 @@ export default function Agenda() {
 
   return (
     <div>
+      <SEO
+        title={settings?.agenda_title || 'Agenda'}
+        description={settings?.agenda_subtitle || 'Formations, ateliers et rendez-vous du cercle Ilé Ẹwà. Consultez les prochains événements et inscrivez-vous.'}
+        url="/agenda"
+      />
+      <SchemaOrg schema={schemaBreadcrumb([
+        { name: 'Accueil', url: '/' },
+        { name: 'Agenda', url: '/agenda' },
+      ])} />
       {/* ── Hero ── */}
       <AgendaHero settings={settings} />
 

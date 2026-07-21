@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import api from '../api/client';
 import Reveal from '../components/Reveal';
+import SEO from '../components/SEO';
+import SchemaOrg, { schemaBreadcrumb } from '../components/SchemaOrg';
 
 /* ── Bandeau séparateur de section ── */
 function SectionBanner({ title, index }) {
@@ -98,6 +100,18 @@ export default function DynamicPage({ fixedSlug }) {
 
   return (
     <div>
+      <SEO
+        title={page.title}
+        description={page.content_html
+          ? page.content_html.replace(/<[^>]*>/g, '').slice(0, 155)
+          : `Découvrez la page ${page.title} sur le portail Ilé Ẹwà.`}
+        image={page.cover_image_url || undefined}
+        url={`/${slug}`}
+      />
+      <SchemaOrg schema={schemaBreadcrumb([
+        { name: 'Accueil', url: '/' },
+        { name: page.title, url: `/${slug}` },
+      ])} />
       {/* ── Hero principal de la page ── */}
       <div style={{
         position: 'relative',

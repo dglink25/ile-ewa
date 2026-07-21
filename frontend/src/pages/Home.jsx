@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import api from '../api/client';
 import HeroCarousel from '../components/HeroCarousel';
 import Reveal from '../components/Reveal';
+import SEO from '../components/SEO';
+import SchemaOrg, { schemaOrganization, schemaWebSite } from '../components/SchemaOrg';
 
 const DEFAULT_SLIDE = {
   id: 'default',
@@ -51,6 +53,11 @@ export default function Home() {
 
   return (
     <div>
+      <SEO
+        url="/"
+        description="Ilé Ẹwà — un espace communautaire pour se former, se rencontrer et grandir ensemble. Découvrez nos formations, notre annuaire et nos actualités."
+      />
+      <SchemaOrg schema={[schemaOrganization(), schemaWebSite()]} />
       <HeroCarousel slides={slides} />
 
       {/* INTRODUCTION (texte libre, éditable depuis Admin → Paramètres) */}

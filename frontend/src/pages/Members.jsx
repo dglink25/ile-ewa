@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/client';
 import Reveal from '../components/Reveal';
+import SEO from '../components/SEO';
 
 export default function Members() {
   const [profiles, setProfiles] = useState([]);
@@ -12,6 +13,11 @@ export default function Members() {
 
   return (
     <div className="container" style={{ padding: '60px 24px' }}>
+      <SEO
+        title="Annuaire des membres"
+        description="Découvrez les praticien·ne·s et complices du cercle Ilé Ẹwà. Consultez les profils des membres de notre communauté."
+        url="/membres"
+      />
       <Reveal><h1>Les membres du cercle</h1></Reveal>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 20, marginTop: 32 }}>
         {profiles.map((p, i) => (

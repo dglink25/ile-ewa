@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
+import SEO from '../components/SEO';
+import SchemaOrg, { schemaBlogPosting, schemaEvent, schemaBreadcrumb } from '../components/SchemaOrg';
 
 /* ═══════════════════════════════════════
    ICÔNES SVG
@@ -313,6 +315,28 @@ export default function ArticleDetail({ article, backLink, backLabel }) {
 
   return (
     <>
+      <SEO
+        title={article.title}
+        description={article.excerpt || article.content_html?.replace(/<[^>]*>/g, '').slice(0, 155) || ''}
+        image={article.cover_image_url || undefined}
+        url={`/blog/${article.slug}`}
+        type="article"
+        article={{
+          publishedTime: article.published_at,
+          modifiedTime: article.updated_at,
+          author: article.author_name,
+          tags: article.category_name ? [article.category_name] : [],
+        }}
+      />
+      <SchemaOrg schema={[
+        schemaBlogPosting({ article }),
+        ...(article.start_date ? [schemaEvent({ article })] : []),
+        schemaBreadcrumb([
+          { name: 'Accueil', url: '/' },
+          { name: 'Blog', url: '/blog' },
+          { name: article.title, url: `/blog/${article.slug}` },
+        ]),
+      ]} />
       {/* ── Hero ── */}
       <div style={{
         minHeight: 'clamp(240px, 35vw, 380px)',

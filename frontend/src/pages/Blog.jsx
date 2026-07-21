@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import api from '../api/client';
 import Reveal from '../components/Reveal';
+import SEO from '../components/SEO';
+import SchemaOrg, { schemaBreadcrumb } from '../components/SchemaOrg';
 
 /* ── Icônes ── */
 function IcoArrow() {
@@ -256,6 +258,15 @@ export default function Blog() {
 
   return (
     <div>
+      <SEO
+        title="Blog"
+        description="Articles, ressources et réflexions du cercle Ilé Ẹwà. Découvrez nos publications sur la formation, la communauté et le bien-être."
+        url="/blog"
+      />
+      <SchemaOrg schema={schemaBreadcrumb([
+        { name: 'Accueil', url: '/' },
+        { name: 'Blog', url: '/blog' },
+      ])} />
       {/* ── Hero ── */}
       <BlogHero settings={settings} />
 

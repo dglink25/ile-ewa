@@ -4,6 +4,7 @@ import api from '../api/client';
 import RichTextEditor from '../components/RichTextEditor';
 import ImageInput from '../components/ImageInput';
 import MesFormations from './MesFormations';
+import SEO from '../components/SEO';
 
 /* ═══════════════════════════════════════
    ICÔNES
@@ -320,6 +321,7 @@ export default function MemberSpace() {
 
   return (
     <div className="container" style={{ padding: 'clamp(32px, 5vw, 60px) 24px 100px', maxWidth: 860 }}>
+      <SEO title="Mon espace membre" noIndex />
       {/* En-tête */}
       <div style={{ marginBottom: 32 }}>
         <h1 style={{ margin: '0 0 4px' }}>Mon espace membre</h1>

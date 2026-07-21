@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import api from '../api/client';
+import SEO from '../components/SEO';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState(null); // 'success' | 'error' | null
+  const [status, setStatus] = useState(null);
   const [sending, setSending] = useState(false);
 
   async function handleSubmit(e) {
@@ -23,6 +24,11 @@ export default function Contact() {
 
   return (
     <div className="container" style={{ padding: '60px 24px', maxWidth: 620 }}>
+      <SEO
+        title="Contact"
+        description="Contactez le cercle Ilé Ẹwà. Une question, une envie de collaborer ? Écrivez-nous."
+        url="/contact"
+      />
       <h1>Contact</h1>
       <p style={{ color: 'var(--text-muted)' }}>
         Une question, une envie de collaborer ? Écrivez-nous, nous revenons vers vous rapidement.

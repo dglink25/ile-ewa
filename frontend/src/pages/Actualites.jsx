@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/client';
 import Reveal from '../components/Reveal';
+import SEO from '../components/SEO';
 
 /* ── Mini-carousel hero pour les 3 derniers articles en vedette ── */
 function ActualitesHero({ articles }) {
@@ -155,6 +156,11 @@ export default function Actualites() {
 
   return (
     <div>
+      <SEO
+        title="Actualités"
+        description="Suivez les dernières actualités, articles et ressources du cercle Ilé Ẹwà."
+        url="/actualites"
+      />
       {/* Hero carousel avec les 3 premières actualités */}
       <ActualitesHero articles={articles} />
 
