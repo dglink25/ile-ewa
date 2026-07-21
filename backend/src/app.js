@@ -57,6 +57,7 @@ app.use('/api/stats', require('./routes/stats'));
 app.use('/api/enrollments', require('./routes/enrollments'));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+app.use('/sitemap.xml', require('./routes/sitemap'));
 
 app.use((req, res) => res.status(404).json({ error: 'Route introuvable.' }));
 
