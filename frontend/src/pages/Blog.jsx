@@ -221,6 +221,7 @@ export default function Blog() {
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState('');
 
   const activeCat = searchParams.get('categorie') || 'tout';
 
@@ -236,10 +237,18 @@ export default function Blog() {
     }).finally(() => setLoading(false));
   }, []);
 
-  /* Filtrage par catégorie */
-  const filtered = activeCat === 'tout'
+  /* Filtrage catégorie + recherche texte */
+  const byCat = activeCat === 'tout'
     ? articles
     : articles.filter((a) => a.category_slug === activeCat || a.category_name === activeCat);
+
+  const filtered = search.trim()
+    ? byCat.filter((a) =>
+        a.title.toLowerCase().includes(search.toLowerCase()) ||
+        (a.excerpt || '').toLowerCase().includes(search.toLowerCase()) ||
+        (a.author_name || '').toLowerCase().includes(search.toLowerCase()),
+      )
+    : byCat;
 
   const [featured, ...rest] = filtered;
 
@@ -267,95 +276,134 @@ export default function Blog() {
         { name: 'Accueil', url: '/' },
         { name: 'Formations', url: '/blog' },
       ])} />
+
       {/* ── Hero ── */}
       <BlogHero settings={settings} />
 
-      {/* ── Barre de filtres ── */}
+      {/* ── Espace + onglets catégories ── */}
       <div style={{
         borderBottom: '1px solid var(--border)',
         background: 'var(--bg-elevated)',
-        position: 'sticky',
-        top: 64,
-        zIndex: 50,
+        position: 'sticky', top: 64, zIndex: 50,
+        marginTop: 0,
       }}>
         <div className="container" style={{ padding: '0 24px', overflowX: 'auto' }}>
           <div style={{ display: 'flex', gap: 0, alignItems: 'stretch', minWidth: 'max-content' }}>
-            {/* Tout */}
-            <button
-              onClick={() => setCategorie('tout')}
-              style={{
-                padding: '14px 20px',
-                fontSize: 13, fontWeight: 600,
-                border: 'none', background: 'none', cursor: 'pointer',
-                color: activeCat === 'tout' ? 'var(--accent)' : 'var(--text-muted)',
-                borderBottom: activeCat === 'tout' ? '2px solid var(--accent)' : '2px solid transparent',
-                transition: 'color 0.15s ease, border-color 0.15s ease',
-                whiteSpace: 'nowrap',
-              }}
-            >
+            <button onClick={() => setCategorie('tout')} style={tabStyle(activeCat === 'tout')}>
               Toutes les formations
             </button>
-
-            {/* Une catégorie par onglet */}
-            {categories.map((cat) => {
-              const isActive = activeCat === cat.slug || activeCat === cat.name;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setCategorie(cat.slug)}
-                  style={{
-                    padding: '14px 20px',
-                    fontSize: 13, fontWeight: 600,
-                    border: 'none', background: 'none', cursor: 'pointer',
-                    color: isActive ? 'var(--accent)' : 'var(--text-muted)',
-                    borderBottom: isActive ? '2px solid var(--accent)' : '2px solid transparent',
-                    transition: 'color 0.15s ease, border-color 0.15s ease',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {cat.name}
-                </button>
-              );
-            })}
+            {categories.map((cat) => (
+              <button key={cat.id} onClick={() => setCategorie(cat.slug)}
+                style={tabStyle(activeCat === cat.slug || activeCat === cat.name)}>
+                {cat.name}
+              </button>
+            ))}
           </div>
+        </div>
+      </div>
+
+      {/* ── Section Rechercher une formation ── */}
+      <div style={{ background: 'var(--bg-elevated)', borderBottom: '1px solid var(--border)', padding: 'clamp(24px, 4vw, 40px) 24px' }}>
+        <div className="container">
+          <h2 style={{ margin: '0 0 20px', fontSize: 'clamp(20px, 3vw, 28px)' }}>
+            Rechercher une formation
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
+
+            {/* Filtre catégorie */}
+            <div style={{ position: 'relative' }}>
+              <div style={{
+                position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)',
+                color: 'var(--text-muted)', pointerEvents: 'none',
+              }}>
+                <IcoFilter />
+              </div>
+              <select
+                value={activeCat}
+                onChange={(e) => setCategorie(e.target.value)}
+                style={{ paddingLeft: 38, cursor: 'pointer', appearance: 'none', fontWeight: 500 }}
+              >
+                <option value="tout">Toutes les catégories</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.slug}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Recherche texte */}
+            <div style={{ position: 'relative', flex: 1 }}>
+              <div style={{
+                position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)',
+                color: 'var(--text-muted)', pointerEvents: 'none',
+              }}>
+                <IcoSearch />
+              </div>
+              <input
+                type="text"
+                placeholder="Recherchez par formateur ou titre de formation"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                style={{ paddingLeft: 38 }}
+              />
+            </div>
+
+            {/* Bouton */}
+            <button
+              className="btn btn-primary"
+              style={{ justifyContent: 'center', display: 'flex', alignItems: 'center', gap: 8 }}
+              onClick={() => {}}
+            >
+              <IcoSearch /> Rechercher
+            </button>
+          </div>
+
+          {/* Compteur résultats */}
+          {(search || activeCat !== 'tout') && (
+            <p style={{ margin: '14px 0 0', fontSize: 13, color: 'var(--text-muted)' }}>
+              <strong style={{ color: 'var(--text)' }}>{filtered.length}</strong> formation{filtered.length > 1 ? 's' : ''} trouvée{filtered.length > 1 ? 's' : ''}
+              {search && <span> pour « {search} »</span>}
+              {activeCat !== 'tout' && <span> · {categories.find((c) => c.slug === activeCat)?.name}</span>}
+              <button
+                onClick={() => { setSearch(''); setCategorie('tout'); }}
+                style={{ marginLeft: 12, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent)', fontSize: 13 }}
+              >
+                Réinitialiser
+              </button>
+            </p>
+          )}
         </div>
       </div>
 
       {/* ── Contenu ── */}
       <div className="container" style={{ padding: '48px 24px 100px' }}>
-
         {filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-muted)' }}>
-            <p style={{ fontSize: 16 }}>Aucun article dans cette catégorie pour le moment.</p>
-            <button className="btn btn-outline" onClick={() => setCategorie('tout')} style={{ marginTop: 16 }}>
+            <p style={{ fontSize: 16 }}>Aucune formation ne correspond à votre recherche.</p>
+            <button className="btn btn-outline" onClick={() => { setSearch(''); setCategorie('tout'); }} style={{ marginTop: 16 }}>
               Voir toutes les formations
             </button>
           </div>
         )}
 
-        {/* Article vedette (layout horizontal) */}
+        {/* Formation vedette */}
         {featured && (
           <div style={{ marginBottom: 48 }}>
             <ArticleCardFeatured article={featured} />
           </div>
         )}
 
-        {/* Grille des autres articles */}
+        {/* Grille */}
         {rest.length > 0 && (
           <>
             <Reveal>
               <h2 style={{ fontSize: 18, marginBottom: 24, color: 'var(--text-muted)', fontWeight: 600 }}>
                 {activeCat === 'tout'
-                  ? `Articles, RDV et Replays par ordre chronologique`
-                  : `${categories.find((c) => c.slug === activeCat)?.name || activeCat}`
+                  ? 'Formations par ordre chronologique'
+                  : categories.find((c) => c.slug === activeCat)?.name || activeCat
                 }
               </h2>
             </Reveal>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(270px, 1fr))',
-              gap: 28,
-            }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(270px, 1fr))', gap: 28 }}>
               {rest.map((a, i) => (
                 <ArticleCard key={a.id} article={a} delay={i * 0.04} />
               ))}
@@ -365,4 +413,23 @@ export default function Blog() {
       </div>
     </div>
   );
+}
+
+function tabStyle(active) {
+  return {
+    padding: '14px 20px', fontSize: 13, fontWeight: 600,
+    border: 'none', background: 'none', cursor: 'pointer',
+    color: active ? 'var(--accent)' : 'var(--text-muted)',
+    borderBottom: active ? '2px solid var(--accent)' : '2px solid transparent',
+    transition: 'color 0.15s ease, border-color 0.15s ease',
+    whiteSpace: 'nowrap',
+  };
+}
+
+function IcoFilter() {
+  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>;
+}
+
+function IcoSearch() {
+  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
 }
