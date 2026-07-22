@@ -75,7 +75,7 @@ function BlogHero({ settings }) {
             textTransform: 'uppercase', padding: '5px 14px',
             borderRadius: 20, marginBottom: 16,
           }}>
-            <IcoPen /> Blog
+            <IcoPen /> Formations
           </div>
 
           <h1 style={{
@@ -85,7 +85,7 @@ function BlogHero({ settings }) {
             textShadow: '0 2px 20px rgba(0,0,0,0.6)',
             lineHeight: 1.15,
           }}>
-            {settings?.blog_title || 'Blog'}
+            {settings?.blog_title || 'Formations'}
           </h1>
           <p style={{
             fontSize: 'clamp(14px, 2vw, 18px)',
@@ -95,7 +95,7 @@ function BlogHero({ settings }) {
             textShadow: '0 1px 8px rgba(0,0,0,0.5)',
             lineHeight: 1.6,
           }}>
-            {settings?.blog_subtitle || 'Articles, ressources et réflexions du cercle Ilé Ẹwà.'}
+            {settings?.blog_subtitle || 'Toutes nos formations, ressources et réflexions du cercle Ilé Ẹwà.'}
           </p>
         </Reveal>
       </div>
@@ -259,13 +259,13 @@ export default function Blog() {
   return (
     <div>
       <SEO
-        title="Blog"
-        description="Articles, ressources et réflexions du cercle Ilé Ẹwà. Découvrez nos publications sur la formation, la communauté et le bien-être."
+        title="Formations"
+        description="Découvrez toutes les formations, ressources et publications du cercle Ilé Ẹwà."
         url="/blog"
       />
       <SchemaOrg schema={schemaBreadcrumb([
         { name: 'Accueil', url: '/' },
-        { name: 'Blog', url: '/blog' },
+        { name: 'Formations', url: '/blog' },
       ])} />
       {/* ── Hero ── */}
       <BlogHero settings={settings} />
@@ -293,7 +293,7 @@ export default function Blog() {
                 whiteSpace: 'nowrap',
               }}
             >
-              Tout le blog
+              Toutes les formations
             </button>
 
             {/* Une catégorie par onglet */}
@@ -328,7 +328,7 @@ export default function Blog() {
           <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-muted)' }}>
             <p style={{ fontSize: 16 }}>Aucun article dans cette catégorie pour le moment.</p>
             <button className="btn btn-outline" onClick={() => setCategorie('tout')} style={{ marginTop: 16 }}>
-              Voir tout le blog
+              Voir toutes les formations
             </button>
           </div>
         )}

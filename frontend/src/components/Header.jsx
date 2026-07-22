@@ -70,10 +70,10 @@ function BlogMenu() {
       .catch(() => setCategories([]));
   }, []);
   const items = [
-    { key: 'tout', to: '/blog', label: 'Tout le blog' },
+    { key: 'tout', to: '/blog', label: 'Catalogue des Formations' },
     ...categories.map((c) => ({ key: c.id, to: `/blog?categorie=${c.slug}`, label: c.name })),
   ];
-  return <DropdownMenu label="Blog" to="/blog" items={items} />;
+  return <DropdownMenu label="Formations" to="/blog" items={items} />;
 }
 
 function AgendaMenu() {
@@ -175,7 +175,7 @@ export default function Header() {
     api.get('/categories').then(({ data }) => setBlogCats(data.categories || [])).catch(() => {});
   }, []);
   const blogItems = [
-    { key: 'tout', to: '/blog', label: 'Tout le blog' },
+    { key: 'tout', to: '/blog', label: 'Toutes les formations' },
     ...blogCats.map((c) => ({ key: c.id, to: `/blog?categorie=${c.slug}`, label: c.name })),
   ];
   const agendaItems = [
@@ -202,7 +202,10 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text)', flexShrink: 0 }}>
             <img src={logo} alt="Ilé Ẹwà" style={{ height: 36, width: 'auto' }} />
-            <span style={{ fontFamily: 'var(--font-heading)', fontSize: 19, fontWeight: 700 }}>Ilé Ẹwà</span>
+            <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
+              <span style={{ fontFamily: 'var(--font-heading)', fontSize: 19, fontWeight: 700 }}>Ilé Ẹwà</span>
+              <span style={{ fontSize: 14, color: 'var(--accent)', letterSpacing: '0.05em', textAlign: 'center', marginTop: 1 }}>∞</span>
+            </div>
           </Link>
 
           {/* ── Navigation desktop ── */}
@@ -258,7 +261,7 @@ export default function Header() {
         <MobileAccordion label="Présentation" to="/presentation" items={preseItems} onClose={closeMenu} />
         <Link to="/membres" onClick={closeMenu} style={{ display: 'block', padding: '14px 12px', fontSize: 17, fontWeight: 500, color: 'var(--text)', borderBottom: '1px solid var(--border)' }}>Membres</Link>
         <MobileAccordion label="Agenda" to="/agenda" items={agendaItems} onClose={closeMenu} />
-        <MobileAccordion label="Blog" to="/blog" items={blogItems} onClose={closeMenu} />
+        <MobileAccordion label="Formations" to="/blog" items={blogItems} onClose={closeMenu} />
         <MobileAccordion label="Actualités" to="/actualites" items={actusItems} onClose={closeMenu} />
         <Link to="/contact" onClick={closeMenu} style={{ display: 'block', padding: '14px 12px', fontSize: 17, fontWeight: 500, color: 'var(--text)', borderBottom: '1px solid var(--border)' }}>Contact</Link>
 
