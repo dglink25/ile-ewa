@@ -211,7 +211,7 @@ export default function Header() {
           {/* ── Navigation desktop ── */}
           <nav className="nav-desktop" style={{ gap: 24, fontSize: 14, fontWeight: 500, alignItems: 'center' }}>
             <PresentationMenu />
-            <Link to="/membres" style={{ color: 'var(--text)' }}>Membres</Link>
+           
             <AgendaMenu />
             <BlogMenu />
             <DropdownMenu label="Actualités" to="/actualites" items={actusItems} />
