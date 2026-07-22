@@ -284,7 +284,7 @@ export default function Blog() {
       <div style={{
         borderBottom: '1px solid var(--border)',
         background: 'var(--bg-elevated)',
-        position: 'sticky', top: 64, zIndex: 50,
+        position: 'sticky', top: 72, zIndex: 50,
         marginTop: 0,
       }}>
         <div className="container" style={{ padding: '0 24px', overflowX: 'auto' }}>

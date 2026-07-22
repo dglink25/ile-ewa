@@ -353,7 +353,7 @@ export default function Agenda() {
       <div style={{
         borderBottom: '1px solid var(--border)',
         background: 'var(--bg-elevated)',
-        position: 'sticky', top: 64, zIndex: 50,
+        position: 'sticky', top: 72, zIndex: 50,
       }}>
         <div className="container" style={{ padding: '0 24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexWrap: 'nowrap', overflowX: 'auto' }}>

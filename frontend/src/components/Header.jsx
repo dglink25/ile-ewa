@@ -197,21 +197,21 @@ export default function Header() {
         boxShadow: scrolled ? '0 2px 24px rgba(0,0,0,0.28)' : '0 1px 8px rgba(0,0,0,0.10)',
         transition: 'box-shadow 0.2s ease',
       }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
 
           {/* Logo */}
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text)', flexShrink: 0 }}>
-            <img src={logo} alt="Ilé Ẹwà" style={{ height: 36, width: 'auto' }} />
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'var(--text)', flexShrink: 0 }}>
+            <img src={logo} alt="Ilé Ẹwà" style={{ height: 42, width: 'auto' }} />
             <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
-              <span style={{ fontFamily: 'var(--font-heading)', fontSize: 19, fontWeight: 700 }}>Ilé Ẹwà</span>
-              <span style={{ fontSize: 14, color: 'var(--accent)', letterSpacing: '0.05em', textAlign: 'center', marginTop: 1 }}>∞</span>
+              <span style={{ fontFamily: 'var(--font-heading)', fontSize: 22, fontWeight: 700 }}>Ilé Ẹwà</span>
+              <span style={{ fontSize: 16, color: 'var(--accent)', letterSpacing: '0.05em', textAlign: 'center', marginTop: 2 }}>∞</span>
             </div>
           </Link>
 
           {/* ── Navigation desktop ── */}
-          <nav className="nav-desktop" style={{ gap: 24, fontSize: 14, fontWeight: 500, alignItems: 'center' }}>
+          <nav className="nav-desktop" style={{ gap: 28, fontSize: 15, fontWeight: 500, alignItems: 'center' }}>
             <PresentationMenu />
-           
+            <Link to="/membres" style={{ color: 'var(--text)' }}>Membres</Link>
             <AgendaMenu />
             <BlogMenu />
             <DropdownMenu label="Actualités" to="/actualites" items={actusItems} />

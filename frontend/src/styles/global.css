@@ -5,7 +5,14 @@
   --font-body: 'Inter', system-ui, sans-serif;
   --radius: 12px;
   --shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-  --header-h: 64px;
+  --header-h: 72px;
+
+  /* Tailles de police de base */
+  --text-xs:   13px;
+  --text-sm:   15px;
+  --text-base: 17px;
+  --text-lg:   19px;
+  --text-xl:   22px;
 }
 
 /* ── Thème sombre (défaut) ── */
@@ -47,19 +54,28 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
+  font-size: var(--text-base);  /* 17px — base lisible */
+  line-height: 1.65;
   transition: background 0.2s ease, color 0.2s ease;
 }
 
+/* ── Headings ── */
 h1, h2, h3, h4 {
   font-family: var(--font-heading);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25;
 }
+h1 { font-size: clamp(28px, 5vw, 48px); margin: 0 0 20px; }
+h2 { font-size: clamp(22px, 3.5vw, 36px); margin: 0 0 16px; }
+h3 { font-size: clamp(18px, 2.5vw, 24px); margin: 0 0 12px; }
+h4 { font-size: clamp(16px, 2vw, 20px); margin: 0 0 10px; }
+
+p { margin: 0 0 16px; }
 
 a { color: var(--accent); text-decoration: none; }
 a:hover { color: var(--accent-hover); }
 
-button { font-family: var(--font-body); cursor: pointer; }
+button { font-family: var(--font-body); cursor: pointer; font-size: var(--text-sm); }
 
 img { max-width: 100%; height: auto; }
 
@@ -70,13 +86,14 @@ img { max-width: 100%; height: auto; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 12px 22px;
   border-radius: var(--radius);
   border: 1px solid transparent;
   font-weight: 600;
-  font-size: 14px;
+  font-size: var(--text-sm);   /* 15px */
   transition: all 0.15s ease;
   white-space: nowrap;
+  line-height: 1.4;
 }
 .btn-primary { background: var(--accent); color: var(--accent-contrast); }
 .btn-primary:hover { background: var(--accent-hover); }
@@ -98,50 +115,53 @@ a.card:hover, .card-hover:hover {
 }
 
 .container {
-  max-width: 1160px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 32px;
 }
 
+/* ── Formulaires ── */
 input, textarea, select {
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   color: var(--text);
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: var(--text-sm);   /* 15px */
   width: 100%;
+  line-height: 1.5;
 }
 input:focus, textarea:focus, select:focus {
   outline: none;
   border-color: var(--accent);
 }
 label {
-  font-size: 13px;
+  font-size: var(--text-sm);   /* 15px */
   font-weight: 600;
   color: var(--text-muted);
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 /* ──────────────────────────────────────────
-   HEADER — burger menu
+   HEADER
 ────────────────────────────────────────── */
 .nav-desktop { display: flex; }
 .nav-mobile  { display: none; }
 .burger-btn  { display: none; }
 
 /* ──────────────────────────────────────────
-   HERO — fluid font sizes
+   HERO
 ────────────────────────────────────────── */
 .hero-title {
-  font-size: clamp(28px, 6vw, 52px);
-  line-height: 1.15;
-  margin-bottom: 16px;
+  font-size: clamp(32px, 6vw, 56px);
+  line-height: 1.12;
+  margin-bottom: 20px;
 }
 .hero-subtitle {
-  font-size: clamp(15px, 2.5vw, 19px);
+  font-size: clamp(16px, 2.5vw, 20px);
+  line-height: 1.6;
 }
 
 /* ──────────────────────────────────────────
@@ -149,42 +169,35 @@ label {
 ────────────────────────────────────────── */
 .admin-shell { display: flex; min-height: 100vh; }
 .admin-sidebar {
-  width: 240px;
+  width: 256px;
   border-right: 1px solid var(--border);
-  padding: 24px;
+  padding: 28px 20px;
   flex-shrink: 0;
   position: sticky;
   top: 0;
   height: 100vh;
   overflow-y: auto;
 }
-.admin-main { flex: 1; padding: 32px; min-width: 0; }
+.admin-main { flex: 1; padding: 36px; min-width: 0; }
 .admin-topbar { display: none; }
 
 /* ──────────────────────────────────────────
-   RESPONSIVE — Tablet  ≤ 768px
+   RESPONSIVE — Tablet  ≤ 900px
 ────────────────────────────────────────── */
-@media (max-width: 768px) {
-
-  /* Container padding */
-  .container { padding: 0 16px; }
-
-  /* Header nav → drawer */
+@media (max-width: 900px) {
+  .container { padding: 0 20px; }
   .nav-desktop { display: none !important; }
   .burger-btn  { display: flex !important; }
 
-  /* Mobile nav drawer */
   .nav-mobile {
     display: flex;
     flex-direction: column;
     position: fixed;
-    top: 64px;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 72px;
+    left: 0; right: 0; bottom: 0;
     background: var(--bg);
-    padding: 24px 20px;
-    gap: 4px;
+    padding: 20px;
+    gap: 0;
     z-index: 999;
     overflow-y: auto;
     transform: translateX(-100%);
@@ -194,80 +207,51 @@ label {
 
   .nav-mobile a {
     display: block;
-    padding: 14px 12px;
-    font-size: 17px;
+    padding: 16px 14px;
+    font-size: 18px;
     font-weight: 500;
     color: var(--text);
     border-bottom: 1px solid var(--border);
   }
-  .nav-mobile a:last-child { border-bottom: none; }
 
-  .nav-mobile .nav-section-title {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    padding: 20px 12px 6px;
-  }
+  .hero-title { font-size: clamp(28px, 8vw, 44px); }
 
-  /* Header action buttons */
-  .header-actions .btn { padding: 8px 12px; font-size: 13px; }
-
-  /* Hero */
-  .hero-title { font-size: clamp(26px, 8vw, 40px); }
-
-  /* Grids → single column */
-  .grid-auto { grid-template-columns: 1fr !important; }
-
-  /* Profile header stacks */
   .profile-header { flex-direction: column !important; text-align: center; }
   .profile-header img { margin: 0 auto; }
 
-  /* Admin → sidebar hidden behind toggle */
   .admin-sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    z-index: 200;
+    position: fixed; top: 0; left: 0;
+    height: 100vh; z-index: 200;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     background: var(--bg-elevated);
     box-shadow: 4px 0 20px rgba(0,0,0,0.3);
   }
   .admin-sidebar.open { transform: translateX(0); }
-  .admin-main { padding: 20px 16px; }
+  .admin-main { padding: 24px 18px; }
   .admin-topbar { display: flex !important; }
 
-  /* Footer */
   .footer-bottom { flex-direction: column !important; align-items: flex-start !important; }
-
-  /* Section héros mobile */
   .section-hero { background-attachment: scroll !important; }
 }
 
 /* ──────────────────────────────────────────
-   RESPONSIVE — Mobile  ≤ 480px
+   RESPONSIVE — Mobile  ≤ 520px
 ────────────────────────────────────────── */
-@media (max-width: 480px) {
-  .container { padding: 0 12px; }
+@media (max-width: 520px) {
+  :root { --text-base: 16px; }
 
-  h1 { font-size: clamp(22px, 7vw, 36px); }
-  h2 { font-size: clamp(18px, 5vw, 28px); }
+  .container { padding: 0 14px; }
 
-  .btn { padding: 9px 14px; font-size: 13px; }
+  h1 { font-size: clamp(24px, 7vw, 36px); }
+  h2 { font-size: clamp(20px, 5.5vw, 28px); }
+  h3 { font-size: clamp(17px, 4vw, 22px); }
 
-  /* Newsletter form stack */
+  .btn { padding: 11px 16px; font-size: 14px; }
+
   .newsletter-row { flex-direction: column !important; }
   .newsletter-row .btn { width: 100%; justify-content: center; }
 
-  /* Auth pages */
-  .auth-container { padding: 48px 16px !important; }
-
-  /* Card padding */
-  .card-padded { padding: 16px !important; }
-
-  /* CTA section */
+  .auth-container { padding: 40px 16px !important; }
   .cta-card { padding: 28px 16px !important; }
 }
